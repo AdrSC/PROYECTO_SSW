@@ -1,0 +1,99 @@
+package com.proyecto.backend.model;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+@Entity
+@Table(name = "cliente")
+public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IDCLIENTE")
+    private Integer idCliente;
+
+    @Column(name = "NOMCLIENTE", nullable = false, length = 45)
+    private String nomCliente;
+
+    @Column(name = "APECLIENTE", nullable = false, length = 45)
+    private String apeCliente;
+
+    @Column(name = "DNI", length = 8)
+    private String dni;
+
+    @Column(name = "CORREO", length = 100)
+    private String correo;
+
+    @Column(name = "DIRECC", length = 100)
+    private String direcc;
+
+    @Column(name = "NUM_TEL", length = 9)
+    private String numTel;
+
+    @Column(name = "FEC_REG", insertable = false, updatable = false)
+    private LocalDateTime fecReg;
+
+    public Cliente() {}
+
+    public Integer getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public String getNomCliente() {
+        return nomCliente;
+    }
+
+    public void setNomCliente(String nomCliente) {
+        this.nomCliente = nomCliente;
+    }
+
+    public String getApeCliente() {
+        return apeCliente;
+    }
+
+    public void setApeCliente(String apeCliente) {
+        this.apeCliente = apeCliente;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getDirecc() {
+        return direcc;
+    }
+
+    public void setDirecc(String direcc) {
+        this.direcc = direcc;
+    }
+
+    public String getNumTel() {
+        return numTel;
+    }
+
+    public void setNumTel(String numTel) {
+        this.numTel = numTel;
+    }
+
+    public LocalDateTime getFecReg() {
+        return fecReg;
+    }
+
+    public void setFecReg(LocalDateTime fecReg) {
+        this.fecReg = fecReg;
+    }
+}
