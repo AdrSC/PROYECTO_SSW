@@ -24,7 +24,11 @@ export class ClienteFormComponent {
     dni: [''],
     correo: [''],
     direcc: [''],
-    numTel: ['']
+    numTel: [''],
+    MARCA: [''],
+    MODELO: [''],
+    NUMERO_SERIE: [''],
+    DESCRIPCION: ['']
   });
   registrar():void{
     this.mensaje='';

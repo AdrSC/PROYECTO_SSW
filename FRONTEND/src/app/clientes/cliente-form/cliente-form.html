@@ -41,6 +41,14 @@
 
     <label for="direccion">Dirección</label>
     <input id="direccion" type="text" formControlName="direcc" maxlength="100">
+       <label for="MARCA">Marca</label>
+    <input id="MARCA" type="text" formControlName="MARCA" maxlength="100">
+       <label for="MODELO">Modelo</label>
+    <input id="MODELO" type="text" formControlName="MODELO" maxlength="100">
+       <label for="NUMERO_SERIE">Número de Serie</label>
+    <input id="NUMERO_SERIE" type="text" formControlName="NUMERO_SERIE" maxlength="100">
+       <label for="DESCRIPCION">Descripción</label>
+    <input id="DESCRIPCION" type="text" formControlName="DESCRIPCION" maxlength="100">
 
     <button type="submit" [disabled]="guardando">
       {{ guardando ? 'Registrando...' : 'Registrar cliente' }}
@@ -52,4 +60,5 @@
       </p>
     }
   </form>
+  
 </section>
