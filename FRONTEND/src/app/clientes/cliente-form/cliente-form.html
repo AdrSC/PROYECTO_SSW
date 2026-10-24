@@ -1,0 +1,55 @@
+
+<section class="contenedor">
+  <h1>Registrar cliente</h1>
+  <p>Completa los datos para registrar un nuevo cliente.</p>
+
+  <form [formGroup]="formulario" (ngSubmit)="registrar()">
+    <label for="nombre">Nombre *</label>
+    <input id="nombre" type="text" formControlName="nomCliente" maxlength="45">
+    @if (formulario.controls.nomCliente.touched &&
+         formulario.controls.nomCliente.invalid) {
+      <small>El nombre es obligatorio.</small>
+    }
+
+    <label for="apellido">Apellido *</label>
+    <input id="apellido" type="text" formControlName="apeCliente" maxlength="45">
+    @if (formulario.controls.apeCliente.touched &&
+         formulario.controls.apeCliente.invalid) {
+      <small>El apellido es obligatorio.</small>
+    }
+
+    <label for="dni">DNI</label>
+    <input id="dni" type="text" formControlName="dni" maxlength="8" placeholder="8 dígitos">
+    @if (formulario.controls.dni.touched &&
+         formulario.controls.dni.invalid) {
+      <small>El DNI debe contener exactamente 8 dígitos.</small>
+    }
+
+    <label for="correo">Correo electrónico</label>
+    <input id="correo" type="email" formControlName="correo" maxlength="100">
+    @if (formulario.controls.correo.touched &&
+         formulario.controls.correo.invalid) {
+      <small>Ingresa un correo válido.</small>
+    }
+
+    <label for="telefono">Teléfono</label>
+    <input id="telefono" type="tel" formControlName="numTel" maxlength="9" placeholder="9 dígitos">
+    @if (formulario.controls.numTel.touched &&
+         formulario.controls.numTel.invalid) {
+      <small>El teléfono debe contener exactamente 9 dígitos.</small>
+    }
+
+    <label for="direccion">Dirección</label>
+    <input id="direccion" type="text" formControlName="direcc" maxlength="100">
+
+    <button type="submit" [disabled]="guardando">
+      {{ guardando ? 'Registrando...' : 'Registrar cliente' }}
+    </button>
+
+    @if (mensaje) {
+      <p class="mensaje" [class.exito]="exito" role="status">
+        {{ mensaje }}
+      </p>
+    }
+  </form>
+</section>
