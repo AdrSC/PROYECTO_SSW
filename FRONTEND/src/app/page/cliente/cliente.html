@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style href="../../../styles.css"></style>
+</head>
+<body>
+    <div>
+        <div class="workspace-header">
+            <div class="workspace-brand">
+                <div class="brand-mark.compact">Logo de la empresa</div>
+                <div>
+                    <div>Electromatic</div>
+                    <div>Área de Clientes</div>
+                </div>
+                <div class="workspace-actions">
+                    <button class="switch-access">Cambiar acceso</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div>
+                <span>Página: Cliente</span>
+            </div>
+            <div class="flex flex-col gap-6">
+                <section>
+                    <div class="flex items-start gap-3 mb-6">
+                        <span>icono cliente</span>
+                    </div>
+                    <div>
+                        <h2>Solicitar Servicio</h2>
+                        <p>El cliente registra la solicitud de mantenimiento de su equipo</p>
+                    </div>
+                </section>
+                <div class="flex flex-col gap-5">
+                    <form [formGroup]="formulario" (ngSubmit)="registrar()">
+                        <p>Datos del cliente</p>
+                        <div class="grid gap-4">
+                            <fieldset>
+                                <div class="flex flex-col gap-1">
+                                    <label for="nombre">Nombre *</label>
+                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="nombre" type="text" formControlName="nomCliente" maxlength="45">
+                                        @if (formulario.controls.nomCliente.touched &&
+                                            formulario.controls.nomCliente.invalid) {
+                                            <small>El nombre es obligatorio.</small>
+                                    }
+                                </div>
+                            </fieldset>
+                            <fieldset class="flex flex-col gap-1">
+                                <div>
+                                    <label for="apellido">Apellido *</label>
+                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="apellido" type="text" formControlName="apeCliente" maxlength="45">
+                                        @if (formulario.controls.apeCliente.touched &&
+                                            formulario.controls.apeCliente.invalid) {
+                                            <small>El apellido es obligatorio.</small>
+                                    }
+                                </div>
+                            </fieldset>
+                            <fieldset class="flex flex-col gap-1">
+                                <div>
+                                    <label for="dni">DNI</label>
+                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-nonetransition-all" id="dni" type="text" formControlName="dni" maxlength="8" placeholder="8 dígitos">
+                                        @if (formulario.controls.dni.touched &&
+                                            formulario.controls.dni.invalid) {
+                                            <small>El DNI debe contener exactamente 8 dígitos.</small>
+                                    }
+                                </div>
+                            </fieldset>
+                            <fieldset class="flex flex-col gap-1">
+                                <div>
+                                    <label for="telefono">Teléfono</label>
+                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-nonetransition-all" id="telefono" type="tel" formControlName="numTel" maxlength="9" placeholder="9 dígitos">
+                                    @if (formulario.controls.numTel.touched &&
+                                        formulario.controls.numTel.invalid) {
+                                        <small>El teléfono debe contener exactamente 9 dígitos.</small>
+                                    }
+                                </div>
+                            </fieldset>
+                            <fieldset class="flex flex-col gap-1">
+                                <div>
+                                <label for="correo">Correo electrónico</label>
+                                <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="correo" type="email" formControlName="correo" maxlength="100">
+                                @if (formulario.controls.correo.touched &&
+                                        formulario.controls.correo.invalid) {
+                                    <small>Ingresa un correo válido.</small>
+                                }
+                                </div> 
+                            </fieldset>
+                            <fieldset class="flex flex-col gap-1">
+                                <div>
+                                <label for="direccion">Dirección:</label>
+                                <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="direccion" type="text" formControlName="direcc" maxlength="100">
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="flex flex-col gap-5">
+                            <p>Datos del equipo</p>
+                            <div class="grid gap-4">
+                                <fieldset >
+                                    <div class="flex flex-col gap-1">
+                                    <label for="marca">Marca:</label>
+                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="MARCA" type="text" formControlName="MARCA" maxlength="100">
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <div class="flex flex-colgap-1">
+                                    <label for="modelo">Modelo:</label>
+                                    <input class="w-full.rounded-md px-3 py-2 text-sm outline-none transition-all" id="MODELO" type="text" formControlName="MODELO" maxlength="100">
+                                    </div> 
+                                </fieldset>
+                                <fieldset>
+                                    <div  class="flex flex-col gap-1">
+                                    <label for="numeroSerie">Número de Serie:</label>
+                                    <input class="w-full.rounded-md.px-3.py-2.text-sm.outline-none.transition-all" id="NUMERO_SERIE" type="text" formControlName="NUMERO_SERIE" maxlength="100">
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <div class="flex flex-col gap-1">
+                                    <label for="descripcion">Descripción del problema:</label>
+                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-nonetransition-all" id="DESCRIPCION" type="text" formControlName="DESCRIPCION" maxlength="100">
+                                    </div>
+                                </fieldset>
+                                <button class="secundary-action" type="submit" [disabled]="guardando">
+                                    {{ guardando ? 'Registrando...' : 'Registrar cliente' }}
+                                </button>
+                                @if (mensaje) {
+                                <p class="mensaje" [class.exito]="exito" role="status">
+                                {{ mensaje }}
+                                </p>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
