@@ -31,6 +31,14 @@ public class Cliente {
     @Column(name = "FEC_REG", insertable = false, updatable = false)
     private LocalDateTime fecReg;
 
+      @Column(name = "MARCA", length = 100)
+    private String MARCA;
+      @Column(name = "MODELO", length = 100)
+    private String modelo;
+      @Column(name = "NUMERO_SERIE", length = 100)
+    private String NUMERO_SERIE;
+     @Column(name = "DESCRIPCION", length = 100)
+    private String descripcion;
     public Cliente() {}
 
     public Integer getIdCliente() {
@@ -96,4 +104,33 @@ public class Cliente {
     public void setFecReg(LocalDateTime fecReg) {
         this.fecReg = fecReg;
     }
+      public String getMARCA() {
+        return MARCA;
+    }
+
+    public void setMARCA(String MARCA) {
+        this.MARCA = MARCA;
+    }
+         public String getMODELO() {
+        return modelo;
+    }
+
+    public void setMODELO(String modelo) {
+        this.modelo = modelo;
+    }
+     public String getNUMERO_SERIE() {
+        return NUMERO_SERIE;
+    }
+
+    public void setNUMERO_SERIE(String NUMERO_SERIE) {
+        this.NUMERO_SERIE = NUMERO_SERIE;
+    }
+     public String getDESCRIPCION() {
+        return descripcion;
+    }
+
+    public void setDESCRIPCION(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
 }
