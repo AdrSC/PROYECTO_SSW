@@ -1,1 +1,263 @@
-<p>recepcion works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header class="workspace-header">
+    <div class="workspace-brand">
+        <div class="brand-mark">E</div>
+        <div>
+            <div class="brand-name">Electromatic</div>
+            <div class="brand-caption">Sistema de órdenes de mantenimiento</div>
+        </div>
+    </div>
+</header>
+
+<!-- Navegación Superior -->
+<nav class="dashboard-nav">
+    <button class="nav-tab" routerLink="/principal">Inicio</button>
+    <button class="nav-tab" routerLink="/cliente">Cliente</button>
+    <button class="nav-tab active">Recepción</button>
+    <button class="nav-tab" routerLink="/tecnico">Técnico</button>
+    <button class="nav-tab" routerLink="/administracion">Administración</button>
+    <button class="nav-tab" routerLink="/calidad">Calidad</button>
+    <button class="nav-tab" routerLink="/almacen">Almacén</button>
+</nav>
+
+<!-- Contenido Principal -->
+<main class="dashboard-main">
+    
+    <!-- Cabecera de Sección -->
+    <div class="page-header">
+        <div>
+            <div class="page-breadcrumb">Mantenimiento preventivo y correctivo / Recepción</div>
+            <h1 class="page-title">Recepción</h1>
+            <p class="page-subtitle">Registra la solicitud, recibe el equipo y coordina el seguimiento y la entrega.</p>
+        </div>
+        
+        <!-- BOTÓN DINÁMICO -->
+        @if (vistaActual === 'listado') {
+            <button class="primary-action" (click)="mostrarFormulario()">Registrar solicitud</button>
+        } @else {
+            <button class="btn-outline" (click)="mostrarListado()">Volver al listado</button>
+        }
+    </div>
+
+    <!-- Barra de Progreso (Idéntica a Cliente) -->
+    <div class="process-stepper">
+        <div class="process-step"><span class="step-num">01</span> Registrar solicitud</div>
+        <div class="process-step"><span class="step-num">02</span> Código de seguimiento</div>
+        <div class="process-step"><span class="step-num">03</span> Consultar estado</div>
+        <div class="process-step"><span class="step-num">04</span> Recibir equipo</div>
+    </div>
+
+    <!-- Nota -->
+    <div class="prototype-note">
+        Prototipo local · Las áreas comparten órdenes, repuestos y documentos en este navegador. Sin envío real de mensajes, compras ni comprobantes fiscales.
+    </div>
+
+    <!-- Pestañas secundarias -->
+    <div class="sub-tabs-container">
+        <button class="sub-tab-active" (click)="mostrarListado()">Órdenes de servicio</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VISTA 1: LISTADO DE ÓRDENES                -->
+    <!-- ========================================== -->
+    @if (vistaActual === 'listado') {
+        <div class="vista-listado fade-in">
+            <!-- Tarjetas de Resumen -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-title">Total de órdenes de servicio</h3>
+                    <p class="stat-value">1</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">En proceso</h3>
+                    <p class="stat-value">1</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Completados</h3>
+                    <p class="stat-value">0</p>
+                </div>
+            </div>
+
+            <!-- Sección de Tabla (Estructura idéntica a Cliente) -->
+            <div class="data-section">
+                <div class="data-header">
+                    <h3>Órdenes de servicio</h3>
+                    <div class="data-filters">
+                        <input type="text" placeholder="Buscar código, equipo o seguimiento...">
+                        <select>
+                            <option>Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>NOMBRE DEL CLIENTE</th>
+                                <th>EQUIPO</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-id">
+                                    <div class="id-main">OS-MWE6TSEQ-IA7</div>
+                                    <div class="id-sub">SEG-MWE6TSEQ-IA7</div>
+                                </td>
+                                <td>sdrfsdf</td>
+                                <td>dfsdfsdf</td>
+                                <td>En espera de repuestos</td>
+                                <td>
+                                    <button class="btn-outline" (click)="verDetalle()">Ver y gestionar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-footer">
+                    1 de 1 registros · Información compartida localmente
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2: FORMULARIO DE REGISTRO            -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formulario') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">{{ modoEdicion ? 'Editar recepción' : 'Registrar solicitud' }}</h3>
+            <p class="text-subtitle-light mb-4">Los campos con * son obligatorios. Los cambios de etapa se realizan desde el detalle.</p>
+            
+            <form class="mt-2" [formGroup]="recepcionForm">
+                
+                <!-- Fila 1 -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Número de solicitud *</label>
+                        <input type="text" class="form-control dark-input" formControlName="num_solicitud" placeholder="Ej. SOL-001">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Código de seguimiento *</label>
+                        <input type="text" class="form-control dark-input" formControlName="COD_SEGUIMIENTO" placeholder="Ej. SEG-001">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Fecha y hora de recepción *</label>
+                        <input type="datetime-local" class="form-control dark-input" formControlName="fecha_hora_recepcion">
+                    </div>
+                </div>
+
+                <!-- Fila 2 -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="custom-label">Estado visual del equipo *</label>
+                        <textarea class="form-control dark-input" rows="3" formControlName="estado_visual" placeholder="Describa el estado físico actual..."></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="custom-label">Accesorios entregados *</label>
+                        <textarea class="form-control dark-input" rows="3" formControlName="accesorios_entregados" placeholder="Ej. Cargador, maletín, cables..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Fila 3 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label class="custom-label">ID Técnico asignado *</label>
+                        <input type="text" class="form-control dark-input" formControlName="IDTECNICO" placeholder="Ej. TEC-05">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="custom-label">ID Empresa / Cliente *</label>
+                        <input type="text" class="form-control dark-input" formControlName="IDEMPREC" placeholder="Ej. EMP-10">
+                    </div>
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="mostrarListado()">Cancelar</button>
+                    <button type="button" class="primary-action" (click)="guardarOrden()">Guardar orden</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 3: DETALLE DE ORDEN                  -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'detalle') {
+        <div class="vista-detalle fade-in mt-3">
+            
+            <div class="alert-custom-success mb-3 d-flex align-items-center">
+                Registro de recepción guardado exitosamente.
+            </div>
+
+            <div class="p-4 bg-surface border border-dark-custom rounded-3 w-100 d-block">
+                
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="text-primary fw-bold mb-1" style="font-size: 0.85rem; letter-spacing: 0.5px;">SOLICITUD N°: {{ ordenActual?.num_solicitud || 'SOL-001' }}</div>
+                        <h2 class="fw-bold text-white mb-1 mt-2" style="font-size: 1.5rem;">Recepción de Equipo</h2>
+                        <div class="text-subtitle-light" style="font-size: 0.85rem;">
+                            Fecha y Hora: {{ ordenActual?.fecha_hora_recepcion || '12/11/2026, 9:34 p. m.' }}
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-md-end justify-content-start align-items-start gap-2 mt-3 mt-md-0">
+                        <button class="btn-action-dark" (click)="editarOrden()">Editar</button>
+                        <button class="btn-action-dark" (click)="mostrarListado()">Eliminar</button>
+                    </div>
+                </div>
+
+                <!-- Caja de Seguimiento -->
+                <div class="tracking-box p-4 mb-4 rounded-3 border border-dark-custom w-100 d-block position-relative">
+                    <div class="text-subtitle-light mb-2 text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+                        CÓDIGO DE SEGUIMIENTO (COD_SEGUIMIENTO)
+                    </div>
+                    <div class="text-primary fw-bold mb-2" style="font-size: 1.5rem;">
+                        {{ ordenActual?.COD_SEGUIMIENTO || 'SEG-MWE6TSEQ-IA7' }}
+                    </div>
+                    <div class="text-subtitle-light" style="font-size: 0.85rem;">
+                        Código único para el seguimiento del cliente.
+                    </div>
+                </div>
+
+                <!-- Cuadrícula de Datos -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-4">
+                        <div class="detail-label">Estado visual (estado_visual)</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ ordenActual?.estado_visual || 'Sin observaciones' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Accesorios entregados (accesorios_entregados)</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ ordenActual?.accesorios_entregados || 'Ninguno' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Técnico asignado (IDTECNICO)</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ ordenActual?.IDTECNICO || 'TEC-01' }}</div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="detail-label">Empresa / Cliente (IDEMPREC)</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ ordenActual?.IDEMPREC || 'EMP-01' }}</div>
+                    </div>
+                </div>
+
+                <div class="text-subtitle-light pt-2" style="font-size: 0.85rem;">
+                    Información vinculada directamente al esquema relacional de Recepción.
+                </div>
+                
+            </div>
+        </div>
+    }
+</main>
+</body>
+</html>

@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -48,7 +49,7 @@ export class ClienteFormComponent {
           this.formulario.reset();
           this.guardando = false;
         },
-        error: (error) => {
+        error: (error: HttpErrorResponse) => {
           console.error('Error al registrar cliente:', error);
           this.mensaje = error.status === 0
             ? 'No se pudo conectar con el backend. Verifica que esté ejecutándose y que CORS esté configurado.'

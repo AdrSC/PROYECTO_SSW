@@ -1,1 +1,336 @@
-<p>calidad works!</p>
+    <header class="workspace-header">
+    <div class="workspace-brand">
+        <div class="brand-mark">E</div>
+        <div>
+            <div class="brand-name">Electromatic</div>
+            <div class="brand-caption">Sistema de órdenes de mantenimiento</div>
+        </div>
+    </div>
+</header>
+
+<!-- Navegación Superior -->
+<nav class="dashboard-nav">
+    <button class="nav-tab" routerLink="/principal">Inicio</button>
+    <button class="nav-tab" routerLink="/cliente">Cliente</button>
+    <button class="nav-tab" routerLink="/recepcion">Recepción</button>
+    <button class="nav-tab" routerLink="/tecnico">Técnico</button>
+    <button class="nav-tab" routerLink="/administracion">Administración</button>
+    <button class="nav-tab active">Calidad</button>
+    <button class="nav-tab" routerLink="/almacen">Almacén</button>
+</nav>
+
+<!-- Contenido Principal -->
+<main class="dashboard-main">
+    
+    <!-- Cabecera de Sección -->
+    <div class="page-header">
+        <div>
+            <div class="page-breadcrumb">Mantenimiento preventivo y correctivo / Calidad</div>
+            <h1 class="page-title">Calidad</h1>
+            <p class="page-subtitle">Verifica el problema y repite las pruebas hasta cumplir los estándares.</p>
+        </div>
+        
+        <!-- BOTÓN DINÁMICO -->
+        @if (vistaActual !== 'listado') {
+            <button class="btn-outline" (click)="mostrarListado()">Volver al listado</button>
+        }
+    </div>
+
+    <!-- Barra de Progreso (4 Pasos de Calidad) -->
+    <div class="process-stepper">
+        <div class="process-step"><span class="step-num">01</span> Verificar problema</div>
+        <div class="process-step"><span class="step-num">02</span> Prueba de funcionamiento</div>
+        <div class="process-step"><span class="step-num">03</span> Evaluar estándares</div>
+        <div class="process-step"><span class="step-num">04</span> Aprobar / repetir prueba</div>
+    </div>
+
+    <!-- Nota -->
+    <div class="prototype-note">
+        Prototipo local · Las áreas comparten órdenes, repuestos y documentos en este navegador. Sin envío real de mensajes, compras ni comprobantes fiscales.
+    </div>
+
+    <!-- Pestañas secundarias -->
+    <div class="sub-tabs-container">
+        <button class="sub-tab-active">Órdenes de servicio</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VISTA 1: LISTADO DE ÓRDENES EN CALIDAD     -->
+    <!-- ========================================== -->
+    @if (vistaActual === 'listado') {
+        <div class="vista-listado fade-in">
+            <!-- Tarjetas de Resumen (2 en total, 2 en proceso, 0 completados) -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-title">Total de órdenes de servicio</h3>
+                    <p class="stat-value" id="total-ordenes">2</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">En proceso</h3>
+                    <p class="stat-value" id="en-proceso">2</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Completados</h3>
+                    <p class="stat-value" id="completados">0</p>
+                </div>
+            </div>
+
+            <!-- Sección de Tabla -->
+            <div class="data-section">
+                <div class="data-header">
+                    <h3>Órdenes de servicio</h3>
+                    <div class="data-filters">
+                        <input type="text" placeholder="Buscar código, equipo o seguimiento..." id="calidadBuscar">
+                        <select>
+                            <option>Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>NOMBRE DEL CLIENTE</th>
+                                <th>EQUIPO</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (orden of listaOrdenesCalidad; track orden.codigo) {
+                                <tr>
+                                    <td class="col-id">
+                                        <div class="id-main" >{{ orden.codigo }}</div>
+                                        <div class="id-sub">{{ orden.seguimiento }}</div>
+                                    </td>
+                                    <td>{{ orden.cliente }}</td>
+                                    <td>{{ orden.equipo }}</td>
+                                    <td>{{ orden.estado }}</td>
+                                    <td>
+                                        <button class="btn-outline" (click)="verDetalle(orden)">Ver y gestionar</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-footer">
+                    2 de 2 registros · Información compartida localmente
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2: DETALLE DE CALIDAD                -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'detalle') {
+        <div class="vista-detalle fade-in mt-3">
+            
+            <div class="p-4 bg-surface border border-dark-custom rounded-3 w-100 d-block">
+                
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="text-primary fw-bold mb-1" style="font-size: 0.85rem; letter-spacing: 0.5px;">{{ ordenActual?.codigo || 'OS-MWEL6073-UUM' }}</div>
+                        <h2 class="fw-bold text-white mb-1 mt-2" style="font-size: 1.5rem;">{{ ordenActual?.cliente || 'Adriano' }}</h2>
+                        <div class="text-subtitle-light" style="font-size: 0.85rem;">
+                            {{ ordenActual?.estado || 'En calidad' }} · 13/11/2026, 1:18:43 a. m.
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-md-end justify-content-start align-items-start gap-2 mt-3 mt-md-0">
+                        <button class="btn-action-dark" (click)="editarEvaluacion()">Editar</button>
+                        <button class="btn-action-dark" (click)="mostrarListado()">Eliminar</button>
+                    </div>
+                </div>
+
+                <!-- Caja de Seguimiento -->
+                <div class="tracking-box p-4 mb-4 rounded-3 border border-dark-custom w-100 d-block position-relative">
+                    <div class="text-subtitle-light mb-2 text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+                        CÓDIGO DE SEGUIMIENTO · REGISTRADO
+                    </div>
+                    <div class="text-primary fw-bold mb-2" style="font-size: 1.5rem;">
+                        {{ ordenActual?.seguimiento || 'SEG-MWEL6073-UUM' }}
+                    </div>
+                    <div class="text-subtitle-light" style="font-size: 0.85rem;">
+                        Consulta este código en Cliente para revisar el estado y la guía.
+                    </div>
+                </div>
+
+                <!-- Cuadrícula de Datos (3 columnas) -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-4">
+                        <div class="detail-label">Nombre del cliente</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ ordenActual?.cliente || 'Adriano' }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Teléfono</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">908583142</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Equipo</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ ordenActual?.equipo || 'Motorola G54 5G' }}</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="detail-label">Número de serie</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">0001110002203</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Motivo de la solicitud</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">Descarga de batería muy rápida</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Estado físico del equipo</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">Se por fuera bien</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="detail-label">Accesorios recibidos</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">solo el equipo movil</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Técnico asignado</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">Pepito</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Comunicación al cliente</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">Por WhatsApp</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="detail-label">Guía de procedimiento / entrega</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">Sera contra - entrega</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Inspección del equipo</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">asdasd</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Diagnóstico</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">asdasdasd</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="detail-label">Tipo de mantenimiento</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">Preventivo</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Componentes revisados / falla identificada</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">asdasd</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Limpieza y ajustes</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">asdasda</div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="detail-label">¿Necesita repuestos?</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">No</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Trabajo realizado</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">asdasd</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">¿Funciona correctamente?</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">Sí</div>
+                    </div>
+                </div>
+
+                <!-- Siguiente paso del proceso -->
+                <div class="pt-3 border-top border-dark-custom mb-4">
+                    <div class="text-subtitle-light mb-3" style="font-size: 0.9rem; font-weight: bold;">Siguiente paso del proceso</div>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <button type="button" class="primary-action">Aprobar estándares</button>
+                        <button type="button" class="btn text-white px-3 py-2 border-0 rounded-2" style="background-color: #3b82f6; font-size: 0.85rem; font-weight: 600;">Repetir verificación y pruebas</button>
+                    </div>
+                </div>
+
+                <div class="text-subtitle-light pt-2" style="font-size: 0.85rem;">
+                    Documentos vinculados: 0 requerimientos · 0 comprobantes · 0 garantías.
+                </div>
+                
+            </div>
+        </div>
+    }
+    <!-- ========================================== -->
+    <!-- VISTA 3: FORMULARIO EDITAR ORDEN           -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formulario') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">Editar orden</h3>
+            <p class="text-subtitle-light mb-4">Los campos con * son obligatorios. Los cambios de etapa se realizan desde el detalle.</p>
+            
+            <form class="mt-2" [formGroup]="calidadForm">
+                
+                <!-- Fila 1 -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Nombre del cliente *</label>
+                        <input type="text" class="form-control dark-input" formControlName="nombreCliente">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Teléfono *</label>
+                        <input type="text" class="form-control dark-input" formControlName="telefono">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Equipo *</label>
+                        <input type="text" class="form-control dark-input" formControlName="equipo">
+                    </div>
+                </div>
+
+                <!-- Fila 2 -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Número de serie</label>
+                        <input type="text" class="form-control dark-input" formControlName="numeroSerie">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Motivo de la solicitud *</label>
+                        <textarea class="form-control dark-input" rows="3" formControlName="motivoSolicitud"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Inspector responsable *</label>
+                        <input type="text" class="form-control dark-input" formControlName="inspectorResponsable">
+                    </div>
+                </div>
+
+                <!-- Fila 3 -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Verificación del problema *</label>
+                        <textarea class="form-control dark-input" rows="3" formControlName="verificacionProblema"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Pruebas de funcionamiento *</label>
+                        <textarea class="form-control dark-input" rows="3" formControlName="pruebasFuncionamiento"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">¿Cumple estándares? *</label>
+                        <select class="form-control dark-input" formControlName="cumpleestandares">
+                            <option value="Sí">Sí</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Fila 4 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label class="custom-label">Observaciones de calidad</label>
+                        <textarea class="form-control dark-input" rows="3" formControlName="observacionesCalidad"></textarea>
+                    </div>
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="verDetalle(ordenActual)">Cancelar</button>
+                    <button type="button" class="primary-action" (click)="guardarOrden()">Guardar orden</button>
+                </div>
+            </form>
+        </div>
+    }
+</main>

@@ -1,0 +1,241 @@
+    <header class="workspace-header">
+    <div class="workspace-brand">
+        <div class="brand-mark">E</div>
+        <div>
+            <div class="brand-name">Electromatic</div>
+            <div class="brand-caption">Sistema de órdenes de mantenimiento</div>
+        </div>
+    </div>
+</header>
+
+<!-- Navegación Superior -->
+<nav class="dashboard-nav">
+    <button class="nav-tab" routerLink="/principal">Inicio</button>
+    <button class="nav-tab" routerLink="/cliente">Cliente</button>
+    <button class="nav-tab" routerLink="/recepcion">Recepción</button>
+    <button class="nav-tab" routerLink="/tecnico">Técnico</button>
+    <button class="nav-tab" routerLink="/administracion">Administración</button>
+    <button class="nav-tab" routerLink="/calidad">Calidad</button>
+    <button class="nav-tab active">Almacén</button>
+</nav>
+
+<!-- Contenido Principal -->
+<main class="dashboard-main">
+    
+    <!-- Cabecera de Sección -->
+    <div class="page-header">
+        <div>
+            <div class="page-breadcrumb">Mantenimiento preventivo y correctivo / Almacén</div>
+            <h1 class="page-title">Almacén</h1>
+            <p class="page-subtitle">Revisa existencias, gestiona requerimientos y entrega los repuestos al técnico.</p>
+        </div>
+        
+        <!-- BOTÓN DINÁMICO -->
+        @if (vistaActual === 'listado') {
+            @if (subTabActiva === 'requerimientos') {
+                <button class="primary-action" (click)="mostrarFormulario()">Crear requerimiento</button>
+            }
+        } @else {
+            <button class="btn-outline" (click)="mostrarListado()">Volver al listado</button>
+        }
+    </div>
+
+    <!-- Barra de Progreso (5 Pasos de Almacén) -->
+    <div class="process-stepper">
+        <div class="process-step"><span class="step-num">01</span> Revisar inventario</div>
+        <div class="process-step"><span class="step-num">02</span> Verificar stock</div>
+        <div class="process-step"><span class="step-num">03</span> Solicitar compra</div>
+        <div class="process-step"><span class="step-num">04</span> Registrar ingreso</div>
+        <div class="process-step"><span class="step-num">05</span> Entregar repuestos</div>
+    </div>
+
+    <!-- Nota -->
+    <div class="prototype-note">
+        Prototipo local · Las áreas comparten órdenes, repuestos y documentos en este navegador. Sin envío real de mensajes, compras ni comprobantes fiscales.
+    </div>
+
+    <!-- Pestañas secundarias (3 opciones) -->
+    <div class="sub-tabs-container d-flex gap-2">
+        <button [class.sub-tab-active]="subTabActiva === 'requerimientos'" [class.sub-tab]="subTabActiva !== 'requerimientos'" (click)="cambiarSubTab('requerimientos')">Requerimientos</button>
+        <button [class.sub-tab-active]="subTabActiva === 'inventario'" [class.sub-tab]="subTabActiva !== 'inventario'" (click)="cambiarSubTab('inventario')">Inventario</button>
+        <button [class.sub-tab-active]="subTabActiva === 'ingresos'" [class.sub-tab]="subTabActiva !== 'ingresos'" (click)="cambiarSubTab('ingresos')">Ingresos de material</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VISTA 1: LISTADO Y GESTIÓN                 -->
+    <!-- ========================================== -->
+    @if (vistaActual === 'listado') {
+        <div class="vista-listado fade-in">
+            <!-- Tarjetas de Resumen -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-title">
+                        {{ subTabActiva === 'requerimientos' ? 'Total de requerimientos' : 
+                           (subTabActiva === 'inventario' ? 'Total de inventario' : 'Total de ingresos') }}
+                    </h3>
+                    <p class="stat-value">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">En proceso</h3>
+                    <p class="stat-value">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Completados</h3>
+                    <p class="stat-value">0</p>
+                </div>
+            </div>
+
+            <!-- Sección de Tabla -->
+            <div class="data-section">
+                <div class="data-header">
+                    <h3>{{ subTabActiva === 'requerimientos' ? 'Requerimientos' : 
+                             (subTabActiva === 'inventario' ? 'Inventario de repuestos' : 'Ingresos de material') }}</h3>
+                    <div class="data-filters">
+                        <input type="text" placeholder="Buscar código, equipo o seguimiento...">
+                        <select>
+                            <option>Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            @if (subTabActiva === 'requerimientos') {
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>ORDEN DE SERVICIO</th>
+                                    <th>REPUESTO REQUERIDO</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            } @else if (subTabActiva === 'inventario') {
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>NOMBRE DEL REPUESTO</th>
+                                    <th>STOCK ACTUAL</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            } @else {
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>PROVEEDOR / MATERIAL</th>
+                                    <th>CANTIDAD</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            }
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <!-- Estado vacío visual de la tabla -->
+                <div class="text-center py-5">
+                    <div class="text-white fw-bold mb-1" style="font-size: 1.1rem;">Todo listo para comenzar</div>
+                    <div class="text-subtitle-light" style="font-size: 0.85rem;">Registra la información para iniciar el proceso de esta área.</div>
+                </div>
+
+                <div class="data-footer">
+                    0 de 0 registros · Información compartida localmente
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2: FORMULARIO CREAR REQUERIMIENTO    -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formulario') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">{{ modoEdicion ? 'Editar requerimiento' : 'Crear requerimiento de almacén' }}</h3>
+            <p class="text-subtitle-light mb-4">Los campos con * son obligatorios. Control de existencias y entrega.</p>
+            
+            <form class="mt-2" [formGroup]="almacenForm">
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="custom-label">Orden de servicio *</label>
+                        <select class="form-control dark-input" formControlName="ordenServicio">
+                            <option value="" disabled selected>Seleccionar...</option>
+                            <option value="OS-MWE6TSEQ-IA7">OS-MWE6TSEQ-IA7</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="custom-label">Repuesto requerido *</label>
+                        <input type="text" class="form-control dark-input" formControlName="repuestoRequerido" placeholder="Ej. Batería 3000mAh">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="custom-label">Cantidad solicitada *</label>
+                        <input type="number" class="form-control dark-input" formControlName="cantidadSolicitada" min="1" placeholder="Ej. 1">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="custom-label">Observaciones</label>
+                        <input type="text" class="form-control dark-input" formControlName="observaciones" placeholder="Detalles de entrega...">
+                    </div>
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="mostrarListado()">Cancelar</button>
+                    <button type="button" class="primary-action" (click)="guardarItem()">Guardar requerimiento</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 3: DETALLE                           -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'detalle') {
+        <div class="vista-detalle fade-in mt-3">
+            <div class="alert-custom-success mb-3 d-flex align-items-center">
+                Registro guardado correctamente en Almacén.
+            </div>
+
+            <div class="p-4 bg-surface border border-dark-custom rounded-3 w-100 d-block">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="text-primary fw-bold mb-1" style="font-size: 0.85rem; letter-spacing: 0.5px;">ALMACÉN - REGISTRO</div>
+                        <h2 class="fw-bold text-white mb-1 mt-2" style="font-size: 1.5rem;">{{ itemActual?.repuestoRequerido || 'Repuesto' }}</h2>
+                        <div class="text-subtitle-light" style="font-size: 0.85rem;">
+                            Orden: {{ itemActual?.ordenServicio || 'OS-MWE6TSEQ-IA7' }}
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-md-end justify-content-start align-items-start gap-2 mt-3 mt-md-0">
+                        <button class="btn-action-dark" (click)="editarItem()">Editar</button>
+                        <button class="btn-action-dark" (click)="mostrarListado()">Eliminar</button>
+                    </div>
+                </div>
+
+                <div class="tracking-box p-4 mb-4 rounded-3 border border-dark-custom w-100 d-block position-relative">
+                    <div class="text-subtitle-light mb-2 text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+                        ESTADO DE STOCK
+                    </div>
+                    <div class="text-primary fw-bold mb-2" style="font-size: 1.5rem;">
+                        PENDIENTE DE ENTREGA
+                    </div>
+                </div>
+
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="detail-label">Cantidad solicitada</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ itemActual?.cantidadSolicitada || '1' }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="detail-label">Observaciones</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;">{{ itemActual?.observaciones || 'Ninguna' }}</div>
+                    </div>
+                </div>
+
+                <div class="text-subtitle-light pt-2" style="font-size: 0.85rem;">
+                    Información vinculada al control de inventario local.
+                </div>
+            </div>
+        </div>
+    }
+</main>

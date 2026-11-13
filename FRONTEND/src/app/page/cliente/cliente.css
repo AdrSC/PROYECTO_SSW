@@ -1,0 +1,408 @@
+/* === ESTILOS COMPLEMENTARIOS PARA EL DASHBOARD === */
+
+/* Barra de Navegación (Tabs) */
+.dashboard-nav {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 2rem 0;
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  overflow-x: auto;
+}
+
+.nav-tab {
+  padding: 0.65rem 1.25rem;
+  color: var(--color-text-dim);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-tab:hover {
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-surface) 50%, transparent);
+}
+
+.nav-tab.active {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Contenedor Principal */
+.dashboard-main {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+}
+
+/* Cabecera de Página */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.page-breadcrumb {
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.page-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  color: var(--color-text-dim);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Stepper de Proceso */
+.process-stepper {
+  display: flex;
+  gap: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  background: color-mix(in srgb, var(--color-surface) 60%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.process-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.process-step .step-num {
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.prototype-note {
+  color: var(--color-text-dim);
+  font-size: 0.8rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Pestaña Secundaria */
+.sub-tabs-container {
+  margin-bottom: 1.5rem;
+}
+
+.sub-tab-active {
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+  color: var(--color-accent-hover);
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Tarjetas de Estadísticas */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: color-mix(in srgb, var(--color-surface) 60%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.stat-title {
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+}
+
+.stat-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1;
+}
+
+/* Tabla de Datos */
+.data-section {
+  background: color-mix(in srgb, var(--color-surface) 60%, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.data-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.data-filters {
+  display: flex;
+  gap: 1rem;
+}
+
+.data-filters input,
+.data-filters select {
+  background-color: #12151e;
+  border: 1px solid #282d44;
+  border-radius: 0.4rem;
+  padding: 0.65rem 1rem;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.data-filters input {
+  min-width: 280px;
+}
+
+.data-filters input:focus,
+.data-filters select:focus {
+  border-color: var(--color-accent);
+}
+
+.data-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.data-table th {
+  padding: 1rem 1.5rem;
+  color: var(--color-text-dim);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 30%, transparent);
+}
+
+.data-table td {
+  padding: 1.25rem 1.5rem;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.data-table tbody tr:hover {
+  background: color-mix(in srgb, var(--color-surface) 40%, transparent);
+}
+
+.col-id .id-main {
+  color: var(--color-accent-hover);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.col-id .id-sub {
+  color: var(--color-text-dim);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+  background: var(--color-surface);
+  border-color: var(--color-text-dim);
+}
+
+.data-footer {
+  padding: 1rem 1.5rem;
+  color: var(--color-text-dim);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 52rem) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .data-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .data-filters {
+    width: 100%;
+    flex-direction: column;
+  }
+  .data-filters input {
+    min-width: 100%;
+  }
+}
+/* =========================================
+   ESTILOS ESPECÍFICOS PARA EL FORMULARIO
+   ========================================= */
+
+/* Títulos de sección (Datos del Cliente / Equipo) */
+.section-title {
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color, #2A2D35);
+}
+
+/* Etiquetas de los campos (Labels) */
+.custom-label {
+    color: var(--text-muted, #D1D5DB); /* Gris claro para contraste */
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Forzar Inputs Oscuros sobre Bootstrap */
+.form-control.dark-input {
+    background-color: var(--bg-app, #13151A) !important; /* Fondo negro-azulado */
+    border: 1px solid var(--border-color, #2A2D35) !important;
+    color: var(--text-main, #FFFFFF) !important; /* Texto blanco al escribir */
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control.dark-input:focus {
+    background-color: var(--bg-app, #13151A) !important;
+    border-color: var(--primary-color, #3D5CFF) !important;
+    box-shadow: 0 0 0 0.25rem rgba(61, 92, 255, 0.25) !important;
+    outline: none;
+}
+
+/* Color del texto de ayuda (placeholder) */
+.form-control.dark-input::placeholder {
+    color: #4B5563 !important; /* Gris oscuro sutil */
+    opacity: 1;
+}
+
+/* Alerta de Éxito (Registro Creado) */
+.alert-custom-success {
+    background-color: var(--bg-surface, #1B1E24);
+    border: 1px solid var(--primary-color, #3D5CFF);
+    color: var(--text-main, #FFFFFF);
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Caja de Código de Seguimiento */
+.tracking-box {
+    background-color: var(--bg-app, #13151A);
+    display: block !important; /* Fondo negro puro */
+}
+
+/* Modificador sutil para los valores del detalle */
+.fw-medium {
+    font-weight: 500;
+}
+
+/* =========================================
+   ESTILOS ESPECÍFICOS PARA DETALLE ORDEN
+   ========================================= */
+
+/* Pestaña superior con borde azul */
+.tab-active-outline {
+    background-color: transparent;
+    border: 1px solid var(--primary-color, #3D5CFF);
+    color: var(--text-main, #FFFFFF);
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.tab-active-outline:hover {
+    color: #FFFFFF;
+    background-color: rgba(61, 92, 255, 0.1);
+}
+
+/* Alerta "Registro creado" exacta */
+.alert-custom-success {
+    background-color: transparent; /* Fondo transparente para que tome el del body */
+    border: 1px solid var(--primary-color, #3D5CFF);
+    color: var(--text-main, #FFFFFF);
+    padding: 1.2rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+/* Botones de acción oscuros (Editar/Eliminar) */
+.btn-action-dark {
+    background-color: var(--bg-app, #13151A); /* Fondo muy oscuro */
+    border: 1px solid var(--border-color, #2A2D35);
+    color: var(--text-main, #FFFFFF);
+    padding: 0.45rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+.btn-action-dark:hover {
+    background-color: #2A2D35;
+}
+
+/* Labels específicos para la vista de detalle (no mayúsculas) */
+.detail-label {
+    color: var(--text-muted, #9CA3AF);
+    font-size: 0.85rem;
+    font-weight: 400;
+    margin-bottom: 0.2rem;
+}

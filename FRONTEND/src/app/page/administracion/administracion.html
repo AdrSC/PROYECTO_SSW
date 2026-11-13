@@ -1,1 +1,286 @@
-<p>administracion works!</p>
+    <header class="workspace-header">
+    <div class="workspace-brand">
+        <div class="brand-mark">E</div>
+        <div>
+            <div class="brand-name">Electromatic</div>
+            <div class="brand-caption">Sistema de órdenes de mantenimiento</div>
+        </div>
+    </div>
+</header>
+
+<!-- Navegación Superior -->
+<nav class="dashboard-nav">
+    <button class="nav-tab" routerLink="/principal">Inicio</button>
+    <button class="nav-tab" routerLink="/cliente">Cliente</button>
+    <button class="nav-tab" routerLink="/recepcion">Recepción</button>
+    <button class="nav-tab" routerLink="/tecnico">Técnico</button>
+    <button class="nav-tab active">Administración</button>
+    <button class="nav-tab" routerLink="/calidad">Calidad</button>
+    <button class="nav-tab" routerLink="/almacen">Almacén</button>
+</nav>
+
+<!-- Contenido Principal -->
+<main class="dashboard-main">
+    
+    <!-- Cabecera de Sección -->
+    <div class="page-header">
+        <div>
+            <div class="page-breadcrumb">Mantenimiento preventivo y correctivo / Administración</div>
+            <h1 class="page-title">Administración</h1>
+            <p class="page-subtitle">Gestiona las adquisiciones, emite comprobantes y registra las garantías.</p>
+        </div>
+        
+        <!-- BOTÓN DINÁMICO CONDICIONAL -->
+        @if (vistaActual === 'listado') {
+            @if (subTabActiva === 'compras') {
+                <button class="primary-action" (click)="mostrarFormularioCompra()" id="crear-compra">Crear compra</button>
+            } @else if (subTabActiva === 'comprobantes') {
+                <button class="primary-action" (click)="mostrarFormularioComprobante()" id="crear-comprobante">Crear comprobante</button>
+            } @else if (subTabActiva === 'garantias') {
+                <button class="primary-action" (click)="mostrarFormularioGarantia()" id="crear-garantia">Crear garantía</button>
+            }
+        } @else {
+            <button class="btn-outline" (click)="mostrarListado()">Volver al listado</button>
+        }
+    </div>
+
+    <!-- Barra de Progreso (5 Pasos de Administración) -->
+    <div class="process-stepper">
+        <div class="process-step"><span class="step-num">01</span> Revisar requerimiento</div>
+        <div class="process-step"><span class="step-num">02</span> Realizar compra</div>
+        <div class="process-step"><span class="step-num">03</span> Gestionar adquisición</div>
+        <div class="process-step"><span class="step-num">04</span> Generar comprobante</div>
+        <div class="process-step"><span class="step-num">05</span> Registrar garantía</div>
+    </div>
+
+    <!-- Nota -->
+    <div class="prototype-note">
+        Prototipo local · Las áreas comparten órdenes, repuestos y documentos en este navegador. Sin envío real de mensajes, compras ni comprobantes fiscales.
+    </div>
+
+    <!-- Pestañas secundarias -->
+    <div class="sub-tabs-container d-flex gap-2">
+        <button [class.sub-tab-active]="subTabActiva === 'compras'" [class.sub-tab]="subTabActiva !== 'compras'" (click)="cambiarSubTab('compras')">Compras y adquisiciones</button>
+        <button [class.sub-tab-active]="subTabActiva === 'requerimientos'" [class.sub-tab]="subTabActiva !== 'requerimientos'" (click)="cambiarSubTab('requerimientos')">Requerimientos</button>
+        <button [class.sub-tab-active]="subTabActiva === 'comprobantes'" [class.sub-tab]="subTabActiva !== 'comprobantes'" (click)="cambiarSubTab('comprobantes')">Comprobantes</button>
+        <button [class.sub-tab-active]="subTabActiva === 'garantias'" [class.sub-tab]="subTabActiva !== 'garantias'" (click)="cambiarSubTab('garantias')">Garantías</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VISTA 1: LISTADO Y GESTIÓN                 -->
+    <!-- ========================================== -->
+    @if (vistaActual === 'listado') {
+        <div class="vista-listado fade-in">
+            <!-- Tarjetas de Resumen Dinámicas -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-title">
+                        {{ subTabActiva === 'compras' ? 'Total de compras y adquisiciones' : 
+                           (subTabActiva === 'requerimientos' ? 'Total de requerimientos' : 
+                           (subTabActiva === 'comprobantes' ? 'Total de comprobantes' : 'Total de garantías')) }}
+                    </h3>
+                    <p class="stat-value" id="total-items">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">En proceso</h3>
+                    <p class="stat-value" id="en-proceso">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Completados</h3>
+                    <p class="stat-value" id="completados">0</p>
+                </div>
+            </div>
+
+            <!-- Sección de Tabla Dinámica -->
+            <div class="data-section">
+                <div class="data-header">
+                    <h3>{{ subTabActiva === 'compras' ? 'Compras y adquisiciones' : 
+                             (subTabActiva === 'requerimientos' ? 'Requerimientos' : 
+                             (subTabActiva === 'comprobantes' ? 'Comprobantes' : 'Garantías')) }}</h3>
+                    <div class="data-filters">
+                        <input type="text" placeholder="Buscar código, equipo o seguimiento..." id="administracionBuscar">
+                        <select>
+                            <option>Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table" id="administracionTabla">
+                        <thead>
+                            @if (subTabActiva === 'compras') {
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>PROVEEDOR</th>
+                                    <th>NOMBRE DEL MATERIAL</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            } @else if (subTabActiva === 'requerimientos') {
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>ORDEN DE SERVICIO</th>
+                                    <th>REPUESTO REQUERIDO</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            } @else if (subTabActiva === 'comprobantes') {
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>ORDEN DE SERVICIO</th>
+                                    <th>NÚMERO DE COMPROBANTE</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            } @else if (subTabActiva === 'garantias') {
+                                <tr>
+                                    <th>CÓDIGO</th>
+                                    <th>ORDEN DE SERVICIO</th>
+                                    <th>FIN DE GARANTÍA</th>
+                                    <th>ESTADO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            }
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="text-center py-5">
+                    <div class="text-white fw-bold mb-1" style="font-size: 1.1rem;">Todo listo para comenzar</div>
+                    <div class="text-subtitle-light" style="font-size: 0.85rem;">Registra la información para iniciar el proceso de esta área.</div>
+                </div>
+
+                <div class="data-footer">
+                    0 de 0 registros · Información compartida localmente
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2A: FORMULARIO CREAR COMPRA          -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formularioCompra') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">{{ modoEdicion ? 'Editar compra' : 'Crear compra y adquisición' }}</h3>
+            <p class="text-subtitle-light mb-4">Los campos con * son obligatorios. Gestiona los proveedores y materiales.</p>
+            <form class="mt-2" [formGroup]="compraForm">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="custom-label">Proveedor *</label>
+                        <input type="text" class="form-control dark-input" formControlName="proveedor" id="proveedorInput">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="custom-label">Nombre del material / repuesto *</label>
+                        <input type="text" class="form-control dark-input" formControlName="nombreMaterial" id="nombreMaterialInput">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="mostrarListado()">Cancelar</button>
+                    <button type="button" class="primary-action" (click)="guardarCompra()">Guardar compra</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2B: FORMULARIO CREAR COMPROBANTE     -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formularioComprobante') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">{{ modoEdicion ? 'Editar comprobante' : 'Crear comprobante' }}</h3>
+            <p class="text-subtitle-light mb-4">Los campos con * son obligatorios.</p>
+            <form class="mt-2" [formGroup]="comprobanteForm">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Orden de servicio *</label>
+                        <select class="form-control dark-input" formControlName="ordenServicio" id="ordenServicioInput">
+                            <option value="" disabled selected >Seleccionar...</option>
+                            <option value="OS-MWE6TSEQ-IA7">OS-MWE6TSEQ-IA7</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Número de comprobante *</label>
+                        <input type="text" class="form-control dark-input" formControlName="numeroComprobante" id="numeroComprobanteInput">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Importe del servicio (S/) *</label>
+                        <input type="number" class="form-control dark-input" formControlName="importeServicio" id="importeServicioInput">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="mostrarListado()">Cancelar</button>
+                    <button type="button" class="primary-action" (click)="guardarComprobante()">Guardar comprobante</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2C: FORMULARIO CREAR GARANTÍA        -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formularioGarantia') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">{{ modoEdicion ? 'Editar garantía' : 'Crear garantía' }}</h3>
+            <p class="text-subtitle-light mb-4">Los campos con * son obligatorios. Registro de cobertura y vigencia de garantía.</p>
+            
+            <form class="mt-2" [formGroup]="garantiaForm">
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Orden de servicio *</label>
+                        <select class="form-control dark-input" formControlName="ordenServicio" id="ordenServicioGarantiaInput">
+                            <option value="" disabled selected>Seleccionar...</option>
+                            <option value="OS-MWE6TSEQ-IA7">OS-MWE6TSEQ-IA7</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Inicio de garantía *</label>
+                        <input id="inicioGarantiaInput" type="date" class="form-control dark-input" formControlName="inicioGarantia">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Fin de garantía *</label>
+                        <input id="finGarantiaInput" type="date" class="form-control dark-input" formControlName="finGarantia">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-12">
+                        <label class="custom-label">Observaciones / Condiciones *</label>
+                        <textarea id="observacionesGarantiaInput" class="form-control dark-input" rows="3" formControlName="observaciones" placeholder="Detalle las condiciones de la garantía..."></textarea>
+                    </div>
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="mostrarListado()">Cancelar</button>
+                    <button type="button" class="primary-action" (click)="guardarGarantia()">Guardar garantía</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 3: DETALLE                           -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'detalle') {
+        <div class="vista-detalle fade-in mt-3">
+            <div class="alert-custom-success mb-3 d-flex align-items-center">
+                Registro guardado correctamente.
+            </div>
+            <div class="p-4 bg-surface border border-dark-custom rounded-3 w-100 d-block">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="text-primary fw-bold mb-1" style="font-size: 0.85rem; letter-spacing: 0.5px;">ADMINISTRACIÓN - REGISTRO</div>
+                        <h2 class="fw-bold text-white mb-1 mt-2" style="font-size: 1.5rem;">Detalle de Operación</h2>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-md-end justify-content-start align-items-start gap-2 mt-3 mt-md-0">
+                        <button class="btn-action-dark" (click)="editarItem()">Editar</button>
+                        <button class="btn-action-dark" (click)="mostrarListado()">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</main>

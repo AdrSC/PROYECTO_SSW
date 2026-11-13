@@ -5,137 +5,330 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style href="../../../styles.css"></style>
+    <style href="./cliente.css"></style>
 </head>
 <body>
-    <div>
-        <div class="workspace-header">
-            <div class="workspace-brand">
-                <div class="brand-mark.compact">Logo de la empresa</div>
-                <div>
-                    <div>Electromatic</div>
-                    <div>Área de Clientes</div>
-                </div>
-                <div class="workspace-actions">
-                    <button class="switch-access">Cambiar acceso</button>
-                </div>
-            </div>
-        </div>
+    <header class="workspace-header">
+    <div class="workspace-brand">
+        <div class="brand-mark">E</div>
         <div>
-            <div>
-                <span>Página: Cliente</span>
-            </div>
-            <div class="flex flex-col gap-6">
-                <section>
-                    <div class="flex items-start gap-3 mb-6">
-                        <span>icono cliente</span>
-                    </div>
-                    <div>
-                        <h2>Solicitar Servicio</h2>
-                        <p>El cliente registra la solicitud de mantenimiento de su equipo</p>
-                    </div>
-                </section>
-                <div class="flex flex-col gap-5">
-                    <form [formGroup]="formulario" (ngSubmit)="registrar()">
-                        <p>Datos del cliente</p>
-                        <div class="grid gap-4">
-                            <fieldset>
-                                <div class="flex flex-col gap-1">
-                                    <label for="nombre">Nombre *</label>
-                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="nombre" type="text" formControlName="nomCliente" maxlength="45">
-                                        @if (formulario.controls.nomCliente.touched &&
-                                            formulario.controls.nomCliente.invalid) {
-                                            <small>El nombre es obligatorio.</small>
-                                    }
-                                </div>
-                            </fieldset>
-                            <fieldset class="flex flex-col gap-1">
-                                <div>
-                                    <label for="apellido">Apellido *</label>
-                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="apellido" type="text" formControlName="apeCliente" maxlength="45">
-                                        @if (formulario.controls.apeCliente.touched &&
-                                            formulario.controls.apeCliente.invalid) {
-                                            <small>El apellido es obligatorio.</small>
-                                    }
-                                </div>
-                            </fieldset>
-                            <fieldset class="flex flex-col gap-1">
-                                <div>
-                                    <label for="dni">DNI</label>
-                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-nonetransition-all" id="dni" type="text" formControlName="dni" maxlength="8" placeholder="8 dígitos">
-                                        @if (formulario.controls.dni.touched &&
-                                            formulario.controls.dni.invalid) {
-                                            <small>El DNI debe contener exactamente 8 dígitos.</small>
-                                    }
-                                </div>
-                            </fieldset>
-                            <fieldset class="flex flex-col gap-1">
-                                <div>
-                                    <label for="telefono">Teléfono</label>
-                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-nonetransition-all" id="telefono" type="tel" formControlName="numTel" maxlength="9" placeholder="9 dígitos">
-                                    @if (formulario.controls.numTel.touched &&
-                                        formulario.controls.numTel.invalid) {
-                                        <small>El teléfono debe contener exactamente 9 dígitos.</small>
-                                    }
-                                </div>
-                            </fieldset>
-                            <fieldset class="flex flex-col gap-1">
-                                <div>
-                                <label for="correo">Correo electrónico</label>
-                                <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="correo" type="email" formControlName="correo" maxlength="100">
-                                @if (formulario.controls.correo.touched &&
-                                        formulario.controls.correo.invalid) {
-                                    <small>Ingresa un correo válido.</small>
-                                }
-                                </div> 
-                            </fieldset>
-                            <fieldset class="flex flex-col gap-1">
-                                <div>
-                                <label for="direccion">Dirección:</label>
-                                <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="direccion" type="text" formControlName="direcc" maxlength="100">
-                                </div>
-                            </fieldset>
-                        </div>
-                        <div class="flex flex-col gap-5">
-                            <p>Datos del equipo</p>
-                            <div class="grid gap-4">
-                                <fieldset >
-                                    <div class="flex flex-col gap-1">
-                                    <label for="marca">Marca:</label>
-                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-none transition-all" id="MARCA" type="text" formControlName="MARCA" maxlength="100">
-                                    </div>
-                                </fieldset>
-                                <fieldset>
-                                    <div class="flex flex-colgap-1">
-                                    <label for="modelo">Modelo:</label>
-                                    <input class="w-full.rounded-md px-3 py-2 text-sm outline-none transition-all" id="MODELO" type="text" formControlName="MODELO" maxlength="100">
-                                    </div> 
-                                </fieldset>
-                                <fieldset>
-                                    <div  class="flex flex-col gap-1">
-                                    <label for="numeroSerie">Número de Serie:</label>
-                                    <input class="w-full.rounded-md.px-3.py-2.text-sm.outline-none.transition-all" id="NUMERO_SERIE" type="text" formControlName="NUMERO_SERIE" maxlength="100">
-                                    </div>
-                                </fieldset>
-                                <fieldset>
-                                    <div class="flex flex-col gap-1">
-                                    <label for="descripcion">Descripción del problema:</label>
-                                    <input class="w-full rounded-md px-3 py-2 text-sm outline-nonetransition-all" id="DESCRIPCION" type="text" formControlName="DESCRIPCION" maxlength="100">
-                                    </div>
-                                </fieldset>
-                                <button class="secundary-action" type="submit" [disabled]="guardando">
-                                    {{ guardando ? 'Registrando...' : 'Registrar cliente' }}
-                                </button>
-                                @if (mensaje) {
-                                <p class="mensaje" [class.exito]="exito" role="status">
-                                {{ mensaje }}
-                                </p>
-                                }
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <div class="brand-name">Electromatic</div>
+            <div class="brand-caption">Sistema de órdenes de mantenimiento</div>
         </div>
     </div>
+    </header>
+
+<!-- Navegación Superior -->
+<nav class="dashboard-nav">
+    <button class="nav-tab" routerLink="/principal">Inicio</button>
+    <button class="nav-tab active">Cliente</button>
+    <button class="nav-tab" routerLink="/recepcion">Recepción</button>
+    <button class="nav-tab" routerLink="/tecnico">Técnico</button>
+    <button class="nav-tab" routerLink="/administracion">Administración</button>
+    <button class="nav-tab" routerLink="/calidad">Calidad</button>
+    <button class="nav-tab" routerLink="/almacen">Almacén</button>
+</nav>
+
+<!-- Contenido Principal -->
+<main class="dashboard-main">
+    
+    <!-- Cabecera de Sección -->
+    <div class="page-header">
+        <div>
+            <div class="page-breadcrumb">Mantenimiento preventivo y correctivo / Cliente</div>
+            <h1 class="page-title">Cliente</h1>
+            <p class="page-subtitle">Solicita el servicio, consulta tu código y sigue el estado hasta la entrega.</p>
+        </div>
+        
+        <!-- BOTÓN DINÁMICO: Cambia según la vista actual -->
+        @if (vistaActual === 'listado') {
+            <button class="primary-action" (click)="mostrarFormulario()">Solicitar servicio</button>
+        } @else {
+            <button class="btn-outline" (click)="mostrarListado()">Volver al listado</button>
+        }
+    </div>
+
+    <!-- Barra de Progreso (Pasos) - Visible en ambas vistas -->
+    <div class="process-stepper">
+        <div class="process-step"><span class="step-num">01</span> Solicitar servicio</div>
+        <div class="process-step"><span class="step-num">02</span> Código de seguimiento</div>
+        <div class="process-step"><span class="step-num">03</span> Consultar estado</div>
+        <div class="process-step"><span class="step-num">04</span> Recibir equipo</div>
+    </div>
+
+    <!-- Nota - Visible en ambas vistas -->
+    <div class="prototype-note">
+        Prototipo local · Las áreas comparten órdenes, repuestos y documentos en este navegador. Sin envío real de mensajes, compras ni comprobantes fiscales.
+    </div>
+
+    <!-- Pestañas secundarias - Visible en ambas vistas -->
+    <div class="sub-tabs-container">
+        <button class="sub-tab-active" (click)="mostrarListado()">Órdenes de servicio</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VISTA 1: LISTADO DE ÓRDENES                -->
+    <!-- ========================================== -->
+    @if (vistaActual === 'listado') {
+        <div class="vista-listado fade-in">
+            <!-- Tarjetas de Resumen -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-title">Total de órdenes de servicio</h3>
+                    <p class="stat-value" id="clienteTotal">1</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">En proceso</h3>
+                    <p class="stat-value" id="clienteProceso">1</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Completados</h3>
+                    <p class="stat-value" id="clienteCompletados">0</p>
+                </div>
+            </div>
+
+            <!-- Sección de Tabla -->
+            <div class="data-section">
+                <div class="data-header">
+                    <h3>Órdenes de servicio</h3>
+                    <div class="data-filters">
+                        <input type="text" id="buscarOrdenServicio" placeholder="Buscar código, equipo o seguimiento...">
+                        <select>
+                            <option>Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre del cliente</th>
+                                <th>Equipo</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-id">
+                                    <div class="id-main" id="codOrdenServicio">OS-MWE6TSEQ-IA7</div>
+                                    <div class="id-sub" id="codSeguimiento">SEG-MWE6TSEQ-IA7</div>
+                                </td>
+                                <td id="nomCliente">sdrfsdf</td>
+                                <td id="equipo">dfsdfsdf</td>
+                                <td id="estado">En espera de repuestos</td>
+                                <td>
+                                    <button class="btn-outline" id="btn_Ver_Gestionar" (click)="guardarOrden()" >Ver y gestionar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-footer">
+                    1 de 1 registros · Información compartida localmente
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2: FORMULARIO DE SOLICITUD           -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formulario') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">{{ modoEdicion ? 'Editar orden' : 'Solicitar servicio' }}</h3>
+            <p class="-text-muted mb-4">Los campos con * son obligatorios. Los cambios de etapa se realizan desde el detalle.</p>
+            
+            <!-- FORMULARIO ACTUALIZADO -->
+            <form class="mt-2" [formGroup]="formulario">
+                
+                <!-- SECCIÓN 1: DATOS DEL CLIENTE -->
+                <h5 class="section-title">Datos del Cliente</h5>
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="custom-label">Nombres *</label>
+                        <!-- Campo para NOMCLIENTE -->
+                        <input id="nomCliente" type="text" class="form-control dark-input" placeholder="Ej. Elena" formControlName="nomCliente">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="custom-label">Apellidos *</label>
+                        <!-- Campo para APECLIENTE -->
+                        <input id="apeCliente" type="text" class="form-control dark-input" placeholder="Ej. Vargas" formControlName="apeCliente">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">DNI / Documento *</label>
+                        <!-- Campo para DNI -->
+                        <input id="dni" type="text" class="form-control dark-input" formControlName="dni">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Teléfono *</label>
+                        <!-- Campo para NUM_TEL -->
+                        <input id="numTel" type="tel" class="form-control dark-input" formControlName="numTel">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Correo electrónico *</label>
+                        <!-- Campo para CORREO -->
+                        <input id="correo" type="email" class="form-control dark-input" formControlName="correo">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-12">
+                        <label class="custom-label">Dirección</label>
+                        <!-- Campo para DIRECC -->
+                        <input id="direcc" type="text" class="form-control dark-input" formControlName="direcc">
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 2: DATOS DEL EQUIPO -->
+                <h5 class="section-title">Datos del Equipo</h5>
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Marca *</label>
+                        <!-- Campo para MARCA -->
+                        <input id="marca" type="text" class="form-control dark-input" placeholder="Ej. Siemens" formControlName="MARCA">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Modelo *</label>
+                        <!-- Campo para MODELO -->
+                        <input id="modelo" type="text" class="form-control dark-input" placeholder="Ej. 1LE1" formControlName="MODELO">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Número de serie</label>
+                        <!-- Campo para NUMERO_SERIE -->
+                        <input id="numeroSerie" type="text" class="form-control dark-input" placeholder="Opcional" formControlName="NUMERO_SERIE">
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-12">
+                        <label class="custom-label">Descripción del problema / Motivo *</label>
+                        <!-- Campo para DESCRIPCION -->
+                        <textarea id="descripcion" class="form-control dark-input" rows="3" placeholder="Detalle los síntomas o requerimientos del mantenimiento..." formControlName="DESCRIPCION"></textarea>
+                    </div>
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button id="btnCancelarOrdenServicio" type="button" class="btn-outline" (click)="mostrarListado()">Cancelar</button>
+                    <button id="btnGuardarOrdenServicio" type="button" class="primary-action" (click)="guardarOrden()">Guardar orden</button>
+                </div>
+            </form>
+        </div>
+    }
+    <!-- ========================================== -->
+    <!-- VISTA 3: DETALLE DE ORDEN CREADA           -->
+    <!-- ========================================== -->
+    @if (vistaActual === 'detalle') {
+        <div class="vista-detalle fade-in mt-3">
+            
+            <!-- Alerta de éxito -->
+            <div class="alert-custom-success mb-3 d-flex align-items-center">
+                Registro creado.
+            </div>
+
+            <!-- Tarjeta de Detalles (Se forzó display block y width 100% para evitar colapsos) -->
+            <div class="p-4 bg-surface border border-dark-custom rounded-3 w-100 d-block">
+                
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="text-primary fw-bold mb-1" style="font-size: 0.85rem; letter-spacing: 0.5px;" id="codigoOrdenServicio">OS-{{ ordenActual?.idCliente || 'NUEVA' }}</div>
+                        <!-- Se añadió margin-top para separar el título del código -->
+                        <h2 class="fw-bold text-white mb-1 mt-2" style="font-size: 1.5rem;" id="nombreOrdenServicio">{{ ordenActual?.nomCliente }} {{ ordenActual?.apeCliente }}</h2>
+                        <div class="text-subtitle-light" style="font-size: 0.85rem;" id="fechaOrdenServicio">
+                            {{ ordenActual?.fecReg || 'Registro guardado' }}
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-md-end justify-content-start align-items-start gap-2 mt-3 mt-md-0">
+                        <button class="btn-action-dark" id="editarOrdenServicio" type="button" (click)="editarOrden()">Editar</button>
+                        <button class="btn-action-dark" id="eliminarOrdenServicio" (click)="confirmarEliminacion()">Eliminar</button>
+                    </div>
+                </div>
+
+                <!-- Caja Oscura: Código de Seguimiento (Se aseguró w-100 y position-relative) -->
+                <div class="tracking-box p-4 mb-4 rounded-3 border border-dark-custom w-100 d-block position-relative">
+                    <div class="text-subtitle-light mb-2 text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+                        CÓDIGO DE SEGUIMIENTO · PREASIGNADO; CONFIRMAR AL RECIBIR
+                    </div>
+                    <div class="text-primary fw-bold mb-2" style="font-size: 1.5rem;" id="codigoSeguimiento">
+                        SEG-{{ ordenActual?.idCliente || 'PENDIENTE' }}
+                    </div>
+                    <div class="text-subtitle-light" style="font-size: 0.85rem;" >
+                        Consulta este código en Cliente para revisar el estado y la guía.
+                    </div>
+                </div>
+
+                <!-- Cuadrícula de Datos Ingresados -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-4">
+                        <div class="detail-label">Nombre del cliente</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;" id="nombreCliente">{{ ordenActual?.nomCliente }} {{ ordenActual?.apeCliente }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Teléfono</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;" id="telefonoCliente">{{ ordenActual?.numTel }}</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="detail-label">Equipo</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;" id="equipoCliente">{{ ordenActual?.MARCA }} {{ ordenActual?.MODELO }}</div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="detail-label">Número de serie</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;" id="numeroSerieCliente">{{ ordenActual?.NUMERO_SERIE }}</div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="detail-label">Motivo de la solicitud</div>
+                        <div class="text-white mt-1" style="font-size: 0.95rem;" id="motivoSolicitud">{{ ordenActual?.DESCRIPCION }}</div>
+                    </div>
+                </div>
+
+                <!-- Footer de la tarjeta -->
+                <div class="text-subtitle-light pt-2" style="font-size: 0.85rem;">
+                    Documentos vinculados: 0 requerimientos · 0 comprobantes · 0 garantías.
+                </div>
+                
+            </div>
+        </div>
+    }
+    <!-- ========================================== -->
+    <!-- VISTA 4: CONFIRMAR ELIMINACIÓN             -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'eliminar') {
+        <div class="vista-eliminar fade-in mt-4">
+            
+            <!-- Tarjeta de Confirmación de Eliminación -->
+            <div class="p-4 bg-surface border border-dark-custom rounded-3" style="max-width: 700px;">
+                
+                <div class="text-primary fw-bold mb-3 text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                    Confirmación requerida
+                </div>
+                
+                <h2 class="text-white fw-bold mb-3">¿Eliminar orden?</h2>
+                
+                <!-- El código se puede volver dinámico usando {{ ordenActual?.codigo || 'OS-MWE6TSEQ-IA7' }} si tienes esa propiedad -->
+                <p class="text-subtitle-light mb-4" style="font-size: 0.9rem; line-height: 1.5;">
+                    Se eliminará OS-MWE6TSEQ-IA7. Esta acción no se puede deshacer. No se eliminarán registros con movimientos o documentos que deban conservarse como respaldo.
+                </p>
+                
+                <div class="d-flex gap-3">
+                    <button type="button" class="btn-outline" (click)="cancelarEliminacion()">Cancelar</button>
+                    <!-- Botón blanco para confirmar -->
+                    <button type="button" class="btn bg-white text-dark fw-bold px-4 border-0 rounded-2" (click)="eliminarOrden()">Confirmar eliminación</button>
+                </div>
+                
+            </div>
+            
+        </div>
+    }
+</main>
 </body>
 </html>

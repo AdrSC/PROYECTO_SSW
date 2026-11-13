@@ -1,1 +1,253 @@
-<p>tecnico works!</p>
+    <header class="workspace-header">
+    <div class="workspace-brand">
+        <div class="brand-mark">E</div>
+        <div>
+            <div class="brand-name">Electromatic</div>
+            <div class="brand-caption">Sistema de órdenes de mantenimiento</div>
+        </div>
+    </div>
+</header>
+
+<!-- Navegación Superior -->
+<nav class="dashboard-nav">
+    <button class="nav-tab" routerLink="/principal">Inicio</button>
+    <button class="nav-tab" routerLink="/cliente">Cliente</button>
+    <button class="nav-tab" routerLink="/recepcion">Recepción</button>
+    <button class="nav-tab active">Técnico</button>
+    <button class="nav-tab" routerLink="/administracion">Administración</button>
+    <button class="nav-tab" routerLink="/calidad">Calidad</button>
+    <button class="nav-tab" routerLink="/almacen">Almacén</button>
+</nav>
+
+<!-- Contenido Principal -->
+<main class="dashboard-main">
+    
+    <!-- Cabecera de Sección -->
+    <div class="page-header">
+        <div>
+            <div class="page-breadcrumb">Mantenimiento preventivo y correctivo / Técnico</div>
+            <h1 class="page-title">Técnico</h1>
+            <p class="page-subtitle">Inspecciona, diagnostica y ejecuta el mantenimiento preventivo o correctivo.</p>
+        </div>
+        
+        <!-- BOTÓN DINÁMICO CONDICIONAL -->
+        @if (vistaActual === 'listado') {
+            <!-- Botón visible solo si Requerimientos está activo -->
+            @if (subTabActiva === 'requerimientos') {
+                <button class="primary-action" (click)="mostrarFormularioRequerimiento()" id="btnCrearRequerimiento">Crear requerimiento</button>
+            }
+        } @else {
+            <button class="btn-outline" (click)="mostrarListado()">Volver al listado</button>
+        }
+    </div>
+
+    <!-- Barra de Progreso (5 Pasos de Técnico) -->
+    <div class="process-stepper">
+        <div class="process-step"><span class="step-num">01</span> Inspeccionar y diagnosticar</div>
+        <div class="process-step"><span class="step-num">02</span> Preventivo / correctivo</div>
+        <div class="process-step"><span class="step-num">03</span> Revisar repuestos</div>
+        <div class="process-step"><span class="step-num">04</span> Realizar trabajo</div>
+        <div class="process-step"><span class="step-num">05</span> Verificar funcionamiento</div>
+    </div>
+
+    <!-- Nota -->
+    <div class="prototype-note">
+        Prototipo local · Las áreas comparten órdenes, repuestos y documentos en este navegador. Sin envío real de mensajes, compras ni comprobantes fiscales.
+    </div>
+
+    <!-- Pestañas secundarias -->
+    <div class="sub-tabs-container d-flex gap-2">
+        <button [class.sub-tab-active]="subTabActiva === 'ordenes'" [class.sub-tab]="subTabActiva !== 'ordenes'" (click)="cambiarSubTab('ordenes')" id="btnOrdenes">Órdenes de servicio</button>
+        <button [class.sub-tab-active]="subTabActiva === 'requerimientos'" [class.sub-tab]="subTabActiva !== 'requerimientos'" (click)="cambiarSubTab('requerimientos')" id="btnRequerimientos">Requerimientos</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VISTA 1: LISTADO GENERAL                   -->
+    <!-- ========================================== -->
+    @if (vistaActual === 'listado') {
+        <div class="vista-listado fade-in">
+            <!-- Tarjetas de Resumen -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-title">Total de órdenes de servicio</h3>
+                    <p class="stat-value" id="tecnicoTotalOrdenes">1</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">En proceso</h3>
+                    <p class="stat-value" id="tecnicoEnProceso">1</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Completados</h3>
+                    <p class="stat-value" id="tecnicoCompletados">0</p>
+                </div>
+            </div>
+
+            <!-- Sección de Tabla Dinámica -->
+            <div class="data-section">
+                <div class="data-header">
+                    <h3>{{ subTabActiva === 'ordenes' ? 'Órdenes de servicio' : 'Requerimientos técnicos' }}</h3>
+                    <div class="data-filters">
+                        <input type="text" placeholder="Buscar código, equipo o seguimiento..." id="tecnicoBuscar" />
+                        <select>
+                            <option>Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="data-table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>NOMBRE DEL CLIENTE</th>
+                                <th>EQUIPO</th>
+                                <th>ESTADO</th>
+                                <th>ACCIONES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-id">
+                                    <div class="id-main" id="tecnicoOrdenServicio">OS-MWE6TSEQ-IA7</div>
+                                    <div class="id-sub" id="tecnicoSeguimiento">SEG-MWE6TSEQ-IA7</div>
+                                </td>
+                                <td id="tecnicoNombreCliente">sdrfsdf</td>
+                                <td id="tecnicoEquipo">dfsdfsdf</td>
+                                <td id="tecnicoEstado">En espera de repuestos</td>
+                                <td>
+                                    <button class="btn-outline" (click)="verDetalle()" id="tecnicoBtnVerGestionar">Ver y gestionar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-footer">
+                    1 de 1 registros · Información compartida localmente
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 2: FORMULARIO DIAGNÓSTICO (Original) -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formularioTecnico') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">Registrar diagnóstico técnico</h3>
+            <p class="text-subtitle-light mb-4">Detalla el estado del equipo y las acciones a realizar.</p>
+            <form class="mt-2" [formGroup]="tecnicoForm">
+                <!-- (Contenido del formulario original aquí...) -->
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="mostrarListado()" id="tecnicoBtnCancelar">Cancelar</button>
+                    <button type="button" class="primary-action" (click)="guardarTecnico()" id="tecnicoBtnGuardarDiagnostico">Guardar diagnóstico</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 3: FORMULARIO CREAR REQUERIMIENTO    -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'formRequerimiento') {
+        <div class="vista-formulario fade-in data-section p-4">
+            <h3 class="mb-3 text-white fw-bold">{{ modoEdicion ? 'Editar requerimiento' : 'Crear requerimiento' }}</h3>
+            <p class="text-subtitle-light mb-4">Los campos con * son obligatorios. Los cambios de etapa se realizan desde el detalle.</p>
+            
+            <form class="mt-2" [formGroup]="requerimientoForm" (ngSubmit)="guardarRequerimiento()">
+                
+                <!-- Fila 1 -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label class="custom-label">Orden de servicio *</label>
+                        <select class="form-control dark-input" formControlName="ordenServicio" required id="tecnicoSelectOrdenServicio">
+                            <option value="" disabled>Seleccionar...</option>
+                            <option value="OS-MWE6TSEQ-IA7">OS-MWE6TSEQ-IA7</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Repuesto requerido *</label>
+                        <input id="tecnicoInputRepuesto" type="text" class="form-control dark-input" formControlName="repuestoRequerido" placeholder="Ej. Motor paso a paso" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="custom-label">Cantidad solicitada *</label>
+                        <input id="tecnicoInputCantidad" type="number" class="form-control dark-input" formControlName="cantidadSolicitada" min="1" placeholder="Ej. 1" required>
+                    </div>
+                </div>
+
+                <!-- Fila 2 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-12">
+                        <label class="custom-label">Motivo / especificaciones *</label>
+                        <textarea id="tecnicoTextareaMotivo" class="form-control dark-input" rows="4" formControlName="motivoEspecificaciones" placeholder="Detalle la necesidad del repuesto..." required></textarea>
+                    </div>
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top border-dark-custom">
+                    <button type="button" class="btn-outline" (click)="mostrarListado()" id="tecnicoBtnCancelar">Cancelar</button>
+                    <button type="submit" class="primary-action" id="tecnicoBtnGuardarRequerimiento">Guardar requerimiento</button>
+                </div>
+            </form>
+        </div>
+    }
+
+    <!-- ========================================== -->
+    <!-- VISTA 4: DETALLE TÉCNICO (Simplificado)    -->
+    <!-- ========================================== -->
+    @else if (vistaActual === 'detalleRequerimiento' && requerimientoActual) {
+        <section class="requerimiento-detalle fade-in mt-3">
+            <div class="requirement-created-alert">Registro creado.</div>
+
+            <article class="requirement-detail-card">
+                <div class="requirement-detail-header">
+                    <div>
+                        <div class="requirement-code">{{ requerimientoActual.codigo }}</div>
+                        <h2 class="requirement-name">{{ requerimientoActual.repuestoRequerido }}</h2>
+                        <div class="requirement-date">Solicitado · {{ requerimientoActual.solicitadoEn }}</div>
+                    </div>
+                    <div class="requirement-detail-actions">
+                        <button type="button" class="btn-action-dark" (click)="editarRequerimiento()">Editar</button>
+                        <button type="button" class="btn-action-dark" (click)="mostrarListado()">Eliminar</button>
+                    </div>
+                </div>
+
+                <div class="requirement-detail-grid">
+                    <div>
+                        <div class="detail-label">Orden de servicio</div>
+                        <div class="requirement-detail-value" >{{ requerimientoActual.ordenServicio }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Repuesto requerido</div>
+                        <div class="requirement-detail-value">{{ requerimientoActual.repuestoRequerido }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Cantidad solicitada</div>
+                        <div class="requirement-detail-value">{{ requerimientoActual.cantidadSolicitada }}</div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Motivo / especificaciones</div>
+                        <div class="requirement-detail-value">{{ requerimientoActual.motivoEspecificaciones }}</div>
+                    </div>
+                </div>
+            </article>
+
+            <section class="requirement-history">
+                <h3>Historial del proceso</h3>
+                <div class="requirement-history-date">{{ requerimientoActual.solicitadoEn }}</div>
+                <div class="requirement-history-entry">Técnico: Registro creado</div>
+            </section>
+        </section>
+    }
+
+    @else if (vistaActual === 'detalle') {
+        <div class="vista-detalle fade-in mt-3">
+            <div class="alert-custom-success mb-3 d-flex align-items-center">
+                Acción completada correctamente.
+            </div>
+            <div class="p-4 bg-surface border border-dark-custom rounded-3 w-100 d-block">
+                 <!-- (Contenido de detalle aquí...) -->
+            </div>
+        </div>
+    }
+</main>
